@@ -1,25 +1,21 @@
-# Architecture Levels
+# Architecture Levels — Flow's System
 
 ## Level 1: Agent Control Room + One Agent
-
-Create the control room and register one Hermes agent.
-
-Use this when you are starting with a single personal or work assistant.
+✅ Acquis
 
 ## Level 2: Direct Specialist Agents
+✅ Acquis (tl, trading, content, dev existent comme profiles)
 
-Add multiple specialist agents and talk to each one directly.
+## Level 3: Orchestrator + Specialists ← NOUS SOMMES ICI
+✅ Acquis
 
-Use this when roles are clear enough to separate tools, memory, credentials, and crons.
-
-## Level 3: Orchestrator + Specialists
-
-Add one orchestrator agent as an optional front door.
-
-The orchestrator follows the control room, writes tasks, reads results, and synthesizes outputs.
+Catia (orchestrateur, default profile) = interface unique Flow sur Telegram.
+Sous-agents spécialisés spawnés via terminal.
 
 ## Level 4: Automated Agent Team
+🎯 Prochaine étape
 
-Add recurring workflows, audits, backup checks, and stronger automation.
-
-Only do this after manual delegation works.
+Ajouter :
+- Workflows récurrents multi-agents (ex: TL demande vidéo promo → content la génère automatiquement)
+- Task bus file-based pour handoff asynchrone entre agents
+- Monitoring et alerting orchestré

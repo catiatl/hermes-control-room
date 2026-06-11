@@ -1,68 +1,52 @@
-# hermes-tl - Inventory
+# hermes-tl — Inventory
 
 ## Role
-Agent Transport Logic. Gère le métier du transport : devis, factures, livraisons, stock, RH, prospection, email, veille sectorielle.
+Agent Transport Logic. Gère le métier : devis Pennylane, livraisons, stock, RH, prospection, email automatique, veille sectorielle.
 
 ## Where It Runs
 - Host: ThinkCenter (localhost)
-- Deployment style: Hermes profile (`--profile tl`)
-- Profile dir: `~/.hermes/profiles/tl/`
+- Profile: `tl` (`~/.hermes/profiles/tl/`)
+- Modèle: `deepseek/deepseek-v4-flash` (OpenRouter)
 - Data dir: `~/tl/`
 
 ## Skills
 | Skill | Usage |
-|---|---|
-| `openclaw-imports/logic-apis` | StockLogic, DriveLogic APIs |
-| `openclaw-imports/tl-chiffrage` | Calcul prix transport |
-| `openclaw-imports/tl-devis` | Création devis Pennylane |
-| `openclaw-imports/livraison-cmr` | Gestion livraisons + CMR |
-| `openclaw-imports/pennylane` | Devis, factures, API comptable |
-| `openclaw-imports/vie` | Vérification TVA intracom |
-| `openclaw-imports/prospector-lite` | Prospection B2B |
-| `openclaw-imports/remove-bg` | Images produits |
-| `transport-logic-automation` | Crons métier TL |
-| `veille-transport-logic` | Veille carburant, concurrence, lois |
+|-------|-------|
+| `transport-logic/logic-apis` | StockLogic, DriveLogic APIs |
+| `transport-logic/tl-chiffrage` | Calcul prix transport (coûts réels : gasoil 25L/100km, péages classe 3, 35€/h, camion 150€/j) |
+| `transport-logic/tl-devis` | Création devis formaté |
+| `transport-logic/pennylane` | API Pennylane (devis uniquement) |
+| `transport-logic/recrutement-transport-logic` | Sourcing profils candidats |
 
-## Memory
-- Clients TL, devis en cours, livraisons
-- Stock et inventaire
-- Agenda interventions
-- Historique recrutement
+## Pennylane
+- Token: `PENNYLANE_TOKEN` dans `~/.hermes/.env`
+- Expire: 22 nov 2026
+- Base URL: `https://app.pennylane.com/api/external/v2`
+- Scope autorisé: **Devis uniquement** (pas factures, avoirs, écritures)
+- Clients: FLEX-O HAUSSMAN (ID 1180196098048), Mme Pagenel (ID 1248641298432)
+- Format: invoice_lines avec `raw_currency_unit_price` en string, `FR_200` = TVA 20%, `country_alpha2` pour adresse
+
+## Email
+- SMTP: `spin.o2switch.net:465` (SSL)
+- Compte: `catia@transportlogic.fr`
+- Check email auto: script `~/.hermes/scripts/check-email.py`
+- Cron: */3 6-21, */30 22-5 semaine, */10 weekend
+- Répond à: fliaigre@, rverna@, rates@, christine@
+- Tracking: `~/.hermes/data/replied_emails.json`
+- Modèle check: Ollama gemma:2b (oui/non), Deepseek V4 Flash (contexte+rédaction)
 
 ## Cron Jobs
-| Cron | Frequence | Type |
-|---|---|---|
-| veille-agenda | 18h quotidien | no_agent |
-| check-participants | 10h lundi | no_agent |
-| check-email (jour) | */5 7-21 * * * | no_agent (PAUSED) |
-| check-email (nuit) | */30 22-6 * * * | no_agent (PAUSED) |
-| recrutement-samedi | 10h,16h samedi | LLM |
-| recrutement-dimanche | 10h,16h dimanche | LLM |
-| recrutement-rapport-lundi | 9h lundi | LLM |
-| recrutement-hebdo | 9h lundi | LLM |
-| prospection-mensuelle | 10h 1er du mois | no_agent |
-| bilan-comptable-mensuel | 9h 1er du mois | no_agent |
-| backup-hebdomadaire | 6h lundi | no_agent |
-| prix-gazole | 7h lun-ven | no_agent |
-| veille-produits-afrique | 10h samedi | no_agent |
-| Rapport mensuel Veille & Marché | 9h 1er du mois | LLM |
+- check-email (4 crons no_agent)
+- fly-benin-scan (jeudi 20h)
+- (les devis sont créés à la demande, pas en cron)
 
-## Messaging
-- **Christine** — via email → check-email → Telegram (parle à hermes-tl)
-- **Rémy** — via email → check-email → Telegram (parle à hermes-tl)
-- **Flow** — via Telegram (quand sujet TL)
+## Prospection
+- Sources officielles: Pappers API, Sirene, BOAMP, Douanes
+- Pipeline froid: devineur email + email direct
 
-## Allowed Work
-- Devis, factures, livraisons, stock, CMR
-- Recrutement, prospection
-- Email catia@transportlogic.fr
-- Veille métier (gazole, concurrence, aides, lois)
-
-## Forbidden Work
-- Trading / crypto
-- Création contenu TikTok (sauf vidéos commandées à hermes-content)
-- Devops / infra
-
-## Owner
-- Flow (décisions finales)
-- Christine (quotidien)
+## Infos légales
+- SARL Transport Logic
+- Siège: 1 Rue Clément Ader, 95160 Montmorency
+- RCS Pontoise 917 493 702
+- TVA: FR00917493702
+- Dirigeants: Rémy Verna, Florent Liaigre, Erwan Dossou

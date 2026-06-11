@@ -1,53 +1,44 @@
-# hermes-content - Inventory
+# hermes-content — Inventory
 
 ## Role
-Agent Content Machine : création vidéo/photos/logo pour Inventory Lab (TikTok), YouTube, TL (vidéos commerciales), Avatar IA, projets créatifs.
+Agent Content Machine : création vidéo TikTok, images, logos, contenu pour Inventory Lab, TL, projets créatifs.
 
 ## Where It Runs
 - Host: ThinkCenter (localhost)
-- Deployment style: Hermes profile (`--profile content`)
-- Profile dir: `~/.hermes/profiles/content/`
+- Profile: `content` (`~/.hermes/profiles/content/`)
+- Modèle: `deepseek/deepseek-v4-flash` (OpenRouter)
 - Data dir: `~/content/`
 
 ## Skills
 | Skill | Usage |
-|---|---|
-| `creative/tiktok-product-showcase` | Pipeline vidéo TikTok inventions |
-| `creative/nano-banana` | Génération images 4K |
-| `openclaw-imports/fal-text-to-image` | Génération images FAL |
-| `openclaw-imports/remove-bg` | Suppression fond images |
-| `openclaw-imports/video-frames` | Extraction frames vidéo |
+|-------|-------|
+| `creative/tiktok-product-showcase` | Pipeline vidéo TikTok split-screen pour showcase d'inventions |
+| `creative/faceless-content-machine` | Production automatisée de contenu faceless |
+| `creative/nano-banana` | Génération/édition d'images (Gemini 3 Pro) |
+| `creative/humanizer` | Humaniser texte, enlever AI-isms |
+| `creative/excalidraw` | Diagrammes hand-drawn |
+| `creative/architecture-diagram` | SVG dark-themed architecture diagrams |
+| `creative/video-editing` | Montage vidéo |
+| `creative/video-clip-pipeline` | Pipeline clips vidéo |
+| `creative/manim-video` | Animations mathématiques (3Blue1Brown style) |
+| `video-use/video-use` | Édition vidéo par conversation |
 | `research/last30days` | Recherche tendances TikTok |
-| `creative/humanizer` | Humanisation textes |
+| `ai-marketing/short-form-pipeline` | Pipeline short-form content |
+| `ai-marketing/content-eval` | Évaluation de contenu |
 
-## Memory
-- Inventory Lab (chaîne TikTok inventions)
-- Pipeline : title card muette 1.5s, 78px, fond flouté
-- TTS phonétique ("laides" au lieu de LEDs)
-- Futurs projets : 2e chaîne TikTok, YouTube, Avatar Tatiana météo
-- Vidéos promo TL
+## TikTok Pipeline
+- Sous-titres: 38px, 3-4 mots max, tout en bas (MarginV=60)
+- Pack post complet obligatoire : description + hashtags + CTA
+- Pipeline custom (pas MoneyPrinter)
+
+## Outils créatifs
+- Image generation via FAL / Gemini
+- Face-swap via InsightFace (skill face-swap créée)
+- CloakBrowser v0.31.3 installé (stealth Chromium)
 
 ## Cron Jobs
-| Cron | Frequence | Type |
-|---|---|---|
-| x-veille-quotidienne | 9h quotidien | LLM |
+- (contenu créé à la demande, pas de cron actif)
 
-## Messaging
-- **Flow** — via Telegram
-
-## Allowed Work
-- Création vidéos TikTok/YouTube Shorts
-- Génération images (FAL, NanoBanana)
-- Création logos
-- Montage vidéo
-- Vidéos commerciales pour TL
-- Avatar IA, projets créatifs
-- Veille tendances TikTok
-
-## Forbidden Work
-- Trading / finance
-- Opérations TL (devis, factures, stock)
-- Devops / infra
-
-## Owner
-- Flow
+## Futures explorations
+- Winamax poker bot
+- LeBonCoin automation
