@@ -11,6 +11,7 @@
 
 Catia (orchestrateur, default profile) = interface unique Flow sur Telegram.
 Sous-agents spécialisés spawnés via terminal.
+Bots 24/7 Polymarket gérés par auto-restart cron.
 
 ## Level 4: Automated Agent Team
 🎯 Prochaine étape
@@ -18,4 +19,5 @@ Sous-agents spécialisés spawnés via terminal.
 Ajouter :
 - Workflows récurrents multi-agents (ex: TL demande vidéo promo → content la génère automatiquement)
 - Task bus file-based pour handoff asynchrone entre agents
-- Monitoring et alerting orchestré
+- Monitoring et alerting orchestré (actuellement: auto-restart réactif, pas proactif)
+- Rapport PnL consolidé automatique (actuellement en pause)

@@ -13,46 +13,41 @@ Flow ──► Telegram ──► Catia (orchestrateur uniquement)
                   tl   trading  content    dev
 ```
 
-Flow parle UNIQUEMENT à **Catia** sur Telegram. Catia analyse le sujet et spawn le sous-agent approprié.
+Flow parle UNIQUEMENT à **Catia** sur Telegram. Catia analyse le sujet et spawn le sous-agent CLI approprié.
 
 ## Les 4 Sous-Agents
 
 | Agent | Rôle | Qui parle | Priorité |
 |-------|------|-----------|----------|
 | **[tl](agents/tl/inventory.md)** | Transport Logic (métier, finance, RH, email) | Christine, Rémy, Flow | ⭐ 1 |
-| **[trading](agents/trading/inventory.md)** | Stocks US/HK, Polymarket, Solana, paper | Flow | ⭐ 2 |
-| **[content](agents/content/inventory.md)** | TikTok Inventory Lab, vidéos, images, logo | Flow | ⭐ 3 |
-| **[dev](agents/dev/inventory.md)** | SaaS, infra, sécurité, projets (Bénin, dropshipping) | Flow | ⭐ 4 |
+| **[trading](agents/trading/inventory.md)** | Polymarket (real + paper), weather bot, copy grinding | Flow | ⭐ 2 |
+| **[content](agents/content/inventory.md)** | TikTok Inventory Lab, vidéos, images, inventons | Flow | ⭐ 3 |
+| **[dev](agents/dev/inventory.md)** | SaaS, infra, sécurité, projets (CubageLogic, dropshipping) | Flow | ⭐ 4 |
 
-## Règles de Routage
+## Bots actifs (Polymarket)
 
-Voir `shared/routing.md` pour les règles complètes.
+| Bot | Type | Capital | Status |
+|-----|------|---------|--------|
+| Whale Grinding | Copy trading politique (9 wallets) | $4.80 USDC réel | ✅ 24/7 |
+| Grinding | Copy trading weather (1 wallet) | $4.80 USDC réel | ✅ 24/7 |
+| Weather Ladder | Scan 25 villes (bot_v3.py) | Paper | ✅ 4x/jour |
+| Scan wallets V10/V11 | Découverte hebdo | — | ✅ Dimanche 08:00 |
 
-## Catia — Orchestrateur
+## Infrastructure
 
-Catia est l'interface unique de Flow. Toute communication passe par elle.
-
-**Compétences :**
-- Analyse du sujet du message
-- Délégation au bon sous-agent
-- Synthèse des résultats
-- Réponse directe pour les questions simples
-
-**Ne fait pas :**
-- N'a pas ses propres skills métier (ceux des sous-agents)
-- Ne passe pas par-dessus les sous-agents pour les tâches spécialisées
-- Ne prend pas de décisions financières/strategiques sans Flow
-
-## Projets Non Alloués (dans dev en attendant)
-
-- CubageLogic
-- Dropshipping
-- Bénin (auberge, localogic, achatlogic, ONG)
-- CEO & Marketing
+| Service | Technologie |
+|---------|-------------|
+| Gateway | systemd user service (auto-restart) |
+| Bots 24/7 | Cron auto-restart toutes les 5min |
+| Brain vault | `~/brain/` → GitHub catiatl/obsidian-brain |
+| Sync vault | Cron brain-sync-pull toutes les 15min |
+| Email | check-email.py (3 crons no_agent) |
 
 ## Liens Rapides
 
-- `hermes --profile tl chat`   — Parler à TL
-- `hermes --profile trading chat`   — Parler à Trading
-- `hermes --profile content chat`   — Parler à Content
-- `hermes --profile dev chat`   — Parler à Dev/Projets
+- `hermes --profile tl chat -q "..."` → Agent TL
+- `hermes --profile trading chat -q "..."` → Agent Trading
+- `hermes --profile content chat -q "..."` → Agent Content
+- `hermes --profile dev chat -q "..."` → Agent Dev
+- Vault: `catiatl/obsidian-brain` (GitHub)
+- Control Room: `catiatl/hermes-control-room` (GitHub)
