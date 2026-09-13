@@ -45,15 +45,20 @@ Ils parlent à **l'agent TL**, pas à Catia. Leur canal : email → check-email.
 4. **Infra / Hermes**
 5. **Content / TikTok**
 
-## Bots 24/7 (gérés par auto-restart)
+## Bots 24/7
 
-Ces bots tournent en continu et ne passent PAS par le spawn d'agent :
+⚠️ **AUDIT 06/09/2026 : 0/3 bots en vie.** Le cron `auto-restart-bots` a disparu de la cron list. Sans mécanisme de restart, les bots Polymarket sont tous tombés (dernière activité août 2026). Le seul bot qui tourne est Hermes Weather Bot (`run.py watch`, géré par `weather-watchdog`).
 
-| Bot | Type | Restart |
-|-----|------|---------|
-| Whale Grinding | `real_trader_v2.py --strategy whale_grinding` | auto-restart toutes les 5min |
-| Grinding weather | `real_trader_v2.py --strategy grinding` | auto-restart toutes les 5min |
-| Weather Ladder | `bot_v3.py` scan 4x/jour | Cron 0:05, 6:05, 12:05, 18:05 |
+| Bot | Type | Restart | Statut |
+|-----|------|---------|--------|
+| Whale Grinding | `real_trader_v2.py --strategy whale_grinding` | **MANQUANT** | 🔴 Down depuis ~20/08/2026 |
+| Grinding weather | `real_trader_v2.py --strategy grinding` | **MANQUANT** | 🔴 Down depuis ~20/08/2026 |
+| Weather Ladder | `bot_v3.py` | Cron 4x/jour | 🔴 Down (path error: file à `~/repos/` pas `~/hermes_weatherbot/`) |
+
+**Problèmes ouverts :**
+1. Le cron `auto-restart-bots` n'existe plus dans la cron list — nécessite recréation
+2. `bot_v3.py` est dans `~/repos/hermes_weatherbot/` mais le cron pointe vers `~/hermes_weatherbot/` — path incorrect
+3. Duplicata de weather-watchdog : un avec path `scripts/watchdog.sh` (double `scripts/` → erreur), un avec `weather-watchdog.sh` (OK)
 
 ## Messages automatiques entrants
 

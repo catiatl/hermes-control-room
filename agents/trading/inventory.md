@@ -11,12 +11,15 @@ Agent Trading Polymarket : copy trading réel (whale grinding + grinding), weath
 
 ## Architecture — Bots 24/7
 
-| Bot | Code | Capital | Stratégie | Polling |
-|-----|------|---------|-----------|---------|
-| **Whale Grinding** | `real_trader_v2.py --strategy whale_grinding` | $4.80 réel | Copy entry+exit wallets politiques (9 wallets) | 15s |
-| **Grinding** | `real_trader_v2.py --strategy grinding` | $4.80 réel | Copy entry+exit 1 wallet weather | 15s |
-| **Weather Ladder** | `bot_v3.py` | Paper | Scan 25 villes, multi-bucket DCA | 4x/jour |
-| **Scan wallets V10/V11** | `scan_wallets_v11.py` | — | Découverte hebdo | Dimanche 08:00 |
+⚠️ **AUDIT 06/09/2026 : TOUS LES BOTS SONT DOWN.** Le cron `auto-restart-bots` a disparu. Dernière activité des logs : août 2026.
+
+| Bot | Code | Capital | Stratégie | Statut |
+|-----|------|---------|-----------|--------|
+| **Whale Grinding** | `real_trader_v2.py --strategy whale_grinding` | $5.47 (last log 20/08) | Copy entry+exit wallets politiques (9 wallets) | 🔴 Down |
+| **Grinding** | `real_trader_v2.py --strategy grinding` | $6.02 (last log 20/08) | Copy entry+exit 1 wallet weather | 🔴 Down |
+| **Weather Ladder** | `bot_v3.py` | Paper | Scan 25 villes, multi-bucket DCA | 🔴 Down (path) |
+| **Hermes Weather Bot** | `run.py watch` | $48.12 paper | Live weather bot GGhff | ✅ Running |
+| **Scan wallets V10/V11** | `scan_wallets_v11.py` | — | Découverte hebdo | Cron OK |
 
 ## Wallet Verification Pipeline
 
