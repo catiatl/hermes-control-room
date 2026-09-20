@@ -35,18 +35,30 @@ systemctl --user status hermes-gateway.service --no-pager
 ~/.hermes/logs/gateway.log     → Gateway
 ```
 
-## Auto-restart Bots (critique)
+## Auto-restart Bots (critique — MANQUANT)
 
-Les bots de trading 24/7 sont gérés par un cron **auto-restart** toutes les 5min :
+⚠️ **Le cron `auto-restart-bots` a disparu de la cron list avant le 06/09/2026.** Sans lui, aucun restart automatique n'a lieu. Les 3 bots sont down depuis août.
 
+| Bot | Pour relancer manuellement |
+|-----|---------------------------|
+| Whale Grinding | `cd ~/repos/hermes_weatherbot && python real_trader_v2.py --strategy whale_grinding &` |
+| Grinding weather | `cd ~/repos/hermes_weatherbot && python real_trader_v2.py --strategy grinding &` |
+| Weather Ladder | `cd ~/repos/hermes_weatherbot && python bot_v3.py &` |
+
+**Pour recréer le cron :**
+```bash
+hermes cron add --name auto-restart-bots \
+  --schedule "*/5 * * * *" \
+  --script auto-restart-bots.sh \
+  --deliver local
+```
+
+Vérification :
 ```bash
 hermes cron list | grep auto-restart-bots
-# Vérifier que les bots tournent
 ps aux | grep real_trader_v2
 ps aux | grep bot_v3
 ```
-
-Si un bot est tombé, le cron le relance automatiquement dans les 5 minutes.
 
 ## Bots à surveiller
 

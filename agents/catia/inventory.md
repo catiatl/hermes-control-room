@@ -44,12 +44,12 @@ Les bots tournent en tâche de fond, pas besoin de spawn :
 - `software-development/*` — TDD, code-review, plans, debugging
 
 ## Cron jobs actifs (sur default profile)
-~45 crons dont :
-- `auto-restart-bots` — toutes les 5min, relance les bots tombés
-- `weather-ladder-scan` — 4x/jour, scan weather
+~37 crons dont :
+- ~~`auto-restart-bots` — toutes les 5min~~ **🔴 MANQUANT** (disparu avant le 06/09, les 3 bots sont down depuis août)
+- `weather-watchdog` — watchdog weather bot (existe encore)
 - `scan-wallets-polymarket` — dimanche 08:00
 - `audit-orga-trading-glm52` — dimanche 11:30
-- `brain-sync-pull` — toutes les 15min
+- `brain-auto-push` — push brain après modification
 - `check-email-*` — email automatisé
 - `veille-*` — veille sectorielle
 - `fly-benin-scan` — jeudi 20h
