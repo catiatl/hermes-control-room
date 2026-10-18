@@ -47,18 +47,21 @@ Ils parlent à **l'agent TL**, pas à Catia. Leur canal : email → check-email.
 
 ## Bots 24/7
 
-⚠️ **AUDIT 06/09/2026 : 0/3 bots en vie.** Le cron `auto-restart-bots` a disparu de la cron list. Sans mécanisme de restart, les bots Polymarket sont tous tombés (dernière activité août 2026). Le seul bot qui tourne est Hermes Weather Bot (`run.py watch`, géré par `weather-watchdog`).
+✅ **AUDIT 11/10/2026 : le stack réel = `run.py watch` (Hermes Weather Bot) + `observer.py`, tous deux UP.** (run.py watch PID 545358 depuis 08/10, observer.py PID 69478 depuis 05/10, supervisés par `weather-watchdog.sh` — dernier run OK 11/10 10:33).
+
+Les 3 bots legacy (whale grinding, grinding, weather ladder) sont **obsolètes** : derniers logs août 2026, `bot_v3.py` archivé (artefact mort du 31/08 remplacé par `run.py watch`), `real_trader_v2.py` présent à `~/real_trader_v2.py` mais plus lancé. Le cron `auto-restart-bots` n'existe toujours pas (devenu inutile : le watchdog couvre les 2 bots vivants).
 
 | Bot | Type | Restart | Statut |
 |-----|------|---------|--------|
-| Whale Grinding | `real_trader_v2.py --strategy whale_grinding` | **MANQUANT** | 🔴 Down depuis ~20/08/2026 |
-| Grinding weather | `real_trader_v2.py --strategy grinding` | **MANQUANT** | 🔴 Down depuis ~20/08/2026 |
-| Weather Ladder | `bot_v3.py` | Cron 4x/jour | 🔴 Down (path error: file à `~/repos/` pas `~/hermes_weatherbot/`) |
+| Hermes Weather Bot | `run.py watch` (dans `~/hermes_weatherbot/`) | `weather-watchdog.sh` (cron 5min) | ✅ UP (PID 545358, depuis 08/10) |
+| Observer ask_ladder | `observer.py` (dans `~/hermes_weatherbot/`) | `weather-watchdog.sh` | ✅ UP (PID 69478, depuis 05/10) |
+| Whale Grinding (legacy) | `real_trader_v2.py --strategy whale_grinding` | — | ⚰️ Obsolète, down depuis ~20/08/2026 |
+| Grinding weather (legacy) | `real_trader_v2.py --strategy grinding` | — | ⚰️ Obsolète, down depuis ~20/08/2026 |
+| Weather Ladder (legacy) | `bot_v3.py` | — | ⚰️ Obsolète (archivé, remplacé par run.py watch) |
 
 **Problèmes ouverts :**
-1. Le cron `auto-restart-bots` n'existe plus dans la cron list — nécessite recréation
-2. `bot_v3.py` est dans `~/repos/hermes_weatherbot/` mais le cron pointe vers `~/hermes_weatherbot/` — path incorrect
-3. Duplicata de weather-watchdog : un avec path `scripts/watchdog.sh` (double `scripts/` → erreur), un avec `weather-watchdog.sh` (OK)
+1. Duplicata weather-watchdog : `scripts/watchdog.sh` (double `scripts/` → 1561 échecs cumulés) → à supprimer ; `weather-watchdog.sh` (OK)
+2. Le pré-script d'auto-sync grepait les noms legacy (`real_trader_v2`, `bot_v3.py`) → faux `0/3`/`NO_BOTS_RUNNING` dans les snapshots ; pattern corrigé le 11/10 dans `auto-sync-dominical.sh` (`run.py watch`, `observer.py`, `scan_wallets_v11`)
 
 ## Messages automatiques entrants
 

@@ -35,38 +35,29 @@ systemctl --user status hermes-gateway.service --no-pager
 ~/.hermes/logs/gateway.log     → Gateway
 ```
 
-## Auto-restart Bots (critique — MANQUANT)
+## Relance Bots (stack actif 11/10/2026)
 
-⚠️ **Le cron `auto-restart-bots` a disparu de la cron list avant le 06/09/2026.** Sans lui, aucun restart automatique n'a lieu. Les 3 bots sont down depuis août.
+✅ Le stack actif = **`run.py watch` + `observer.py`** dans `~/hermes_weatherbot/`, supervisés par le cron `weather-watchdog` (toutes les 5min, script `weather-watchdog.sh` — celui-ci est OK ; le duplicata `scripts/watchdog.sh` est cassé, à supprimer). Normalement rien à faire : le watchdog relance.
 
 | Bot | Pour relancer manuellement |
 |-----|---------------------------|
-| Whale Grinding | `cd ~/repos/hermes_weatherbot && python real_trader_v2.py --strategy whale_grinding &` |
-| Grinding weather | `cd ~/repos/hermes_weatherbot && python real_trader_v2.py --strategy grinding &` |
-| Weather Ladder | `cd ~/repos/hermes_weatherbot && python bot_v3.py &` |
+| Hermes Weather Bot | `cd ~/hermes_weatherbot && nohup python3 -u run.py watch &` |
+| Observer ask_ladder | `cd ~/hermes_weatherbot && nohup python3 -u observer.py &` |
 
-**Pour recréer le cron :**
-```bash
-hermes cron add --name auto-restart-bots \
-  --schedule "*/5 * * * *" \
-  --script auto-restart-bots.sh \
-  --deliver local
-```
+⚠️ **Bots legacy (whale grinding, grinding, weather ladder) : obsolètes** — ne PAS les relancer. `bot_v3.py` est archivé (remplacé par `run.py watch`). `real_trader_v2.py` existe à `~/real_trader_v2.py` (PAS dans `~/repos/hermes_weatherbot/`) mais n'est plus utilisé.
 
 Vérification :
 ```bash
-hermes cron list | grep auto-restart-bots
-ps aux | grep real_trader_v2
-ps aux | grep bot_v3
+ps aux | grep -E "run.py watch|observer.py"
+hermes cron list | grep weather-watchdog
 ```
 
 ## Bots à surveiller
 
 | Bot | Process | Vérification |
 |-----|---------|-------------|
-| Whale Grinding | `real_trader_v2.py --strategy whale_grinding` | `ps aux \| grep whale_grinding` |
-| Grinding weather | `real_trader_v2.py --strategy grinding` | `ps aux \| grep grinding` |
-| Weather Ladder | `bot_v3.py` | Cron `weather-ladder-scan` |
+| Hermes Weather Bot | `run.py watch` | `ps aux \| grep "run.py watch"` |
+| Observer ask_ladder | `observer.py` | `ps aux \| grep observer.py` |
 | Scan wallets | `scan_wallets_v11.py` | Cron `scan-wallets-polymarket` (dimanche) |
 
 ## Crons

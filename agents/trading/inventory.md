@@ -7,18 +7,19 @@ Agent Trading Polymarket : copy trading réel (whale grinding + grinding), weath
 - Host: ThinkCenter (localhost)
 - Profile: `trading` (`~/.hermes/profiles/trading/`)
 - Modèle: `deepseek/deepseek-v4-flash` (OpenRouter)
-- Wallet réel: `0x4a6e49071ba0dd9fcff5e0efe65626bbd99420fa` ($4.80 USDC)
+- Wallet réel: `0x4a6e49071ba0dd9fcff5e0efe65626bbd99420fa` ($4.80 USDC) — **vérifié 11/10/2026 via data-api : 0 positions OPEN et 0 CLOSED** (wallet inactif). Solde USDC non re-vérifiable : endpoints balance (gamma-api/data-api) en 404.
 
 ## Architecture — Bots 24/7
 
-⚠️ **AUDIT 06/09/2026 : TOUS LES BOTS SONT DOWN.** Le cron `auto-restart-bots` a disparu. Dernière activité des logs : août 2026.
+✅ **AUDIT 11/10/2026 : stack actif = `run.py watch` + `observer.py`, tous deux UP** (depuis 08/10 et 05/10). Les 3 bots legacy sont obsolètes — dernière activité août 2026, `bot_v3.py` archivé (artefact mort remplacé par `run.py watch`), `real_trader_v2.py` présent mais plus lancé. `auto-restart-bots` n'existe pas (le watchdog couvre les 2 bots vivants).
 
 | Bot | Code | Capital | Stratégie | Statut |
 |-----|------|---------|-----------|--------|
-| **Whale Grinding** | `real_trader_v2.py --strategy whale_grinding` | $5.47 (last log 20/08) | Copy entry+exit wallets politiques (9 wallets) | 🔴 Down |
-| **Grinding** | `real_trader_v2.py --strategy grinding` | $6.02 (last log 20/08) | Copy entry+exit 1 wallet weather | 🔴 Down |
-| **Weather Ladder** | `bot_v3.py` | Paper | Scan 25 villes, multi-bucket DCA | 🔴 Down (path) |
-| **Hermes Weather Bot** | `run.py watch` | $48.12 paper | Live weather bot GGhff | ✅ Running |
+| **Hermes Weather Bot** | `run.py watch` | $62.04 paper (journal 09/10) | Live weather bot GGhff | ✅ UP (PID 545358) |
+| **Observer ask_ladder** | `observer.py` | — | Liquidité ask ladder | ✅ UP (PID 69478) |
+| **Whale Grinding (legacy)** | `real_trader_v2.py --strategy whale_grinding` | $5.47 (last log 20/08) | Copy entry+exit wallets politiques (9 wallets) | ⚰️ Obsolète |
+| **Grinding (legacy)** | `real_trader_v2.py --strategy grinding` | $6.02 (last log 20/08) | Copy entry+exit 1 wallet weather | ⚰️ Obsolète |
+| **Weather Ladder (legacy)** | `bot_v3.py` | Paper | Scan 25 villes, multi-bucket DCA | ⚰️ Archivé (remplacé run.py watch) |
 | **Scan wallets V10/V11** | `scan_wallets_v11.py` | — | Découverte hebdo | Cron OK |
 
 ## Wallet Verification Pipeline

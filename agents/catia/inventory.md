@@ -19,15 +19,17 @@ Catia est l'orchestrateur Hermes. Point d'entrée unique de Flow sur Telegram. A
 | content | `hermes --profile content chat -q "..."` | TikTok, vidéos, images, contenu créatif |
 | dev | `hermes --profile dev chat -q "..."` | Dev, infra, projets SaaS (CubageLogic, dropshipping) |
 
-## Bots 24/7 (auto-restart cron toutes les 5min)
+## Bots 24/7
 
-Les bots tournent en tâche de fond, pas besoin de spawn :
+✅ **AUDIT 11/10/2026 : stack actif = `run.py watch` + `observer.py` (tous deux UP, supervisés par `weather-watchdog.sh`).** Les 3 bots legacy (whale grinding, grinding, weather ladder) sont obsolètes/archivés — ne plus tenter de les relancer.
 
-| Bot | Fichier | Arguments |
-|-----|---------|-----------|
-| Whale Grinding | `real_trader_v2.py` | `--strategy whale_grinding` |
-| Grinding weather | `real_trader_v2.py` | `--strategy grinding` |
-| Weather Ladder | `bot_v3.py` | Cron 4x/jour |
+| Bot | Fichier | Statut |
+|-----|---------|--------|
+| Hermes Weather Bot | `run.py watch` (dans `~/hermes_weatherbot/`) | ✅ UP (PID 545358) |
+| Observer ask_ladder | `observer.py` | ✅ UP (PID 69478) |
+| Whale Grinding (legacy) | `real_trader_v2.py` | ⚰️ Obsolète |
+| Grinding weather (legacy) | `real_trader_v2.py` | ⚰️ Obsolète |
+| Weather Ladder (legacy) | `bot_v3.py` | ⚰️ Archivé |
 
 ## Skills actives
 - `catia-orchestration/brain-vault` — lire/écrire brain Obsidian
@@ -44,16 +46,23 @@ Les bots tournent en tâche de fond, pas besoin de spawn :
 - `software-development/*` — TDD, code-review, plans, debugging
 
 ## Cron jobs actifs (sur default profile)
-~37 crons dont :
-- ~~`auto-restart-bots` — toutes les 5min~~ **🔴 MANQUANT** (disparu avant le 06/09, les 3 bots sont down depuis août)
-- `weather-watchdog` — watchdog weather bot (existe encore)
+~41 crons actifs (vérifié 11/10/2026) dont :
+- `auto-sync-control-room` — dimanche 10:30 (ce job)
+- `weather-watchdog` — toutes les 5min, supervise run.py watch + observer.py (**duplicata cassé** `scripts/watchdog.sh` → 1561 échecs, à supprimer)
+- `weather-bot-bankroll-reset` — 05:00 daily (reset bankroll $50)
+- `protocole-weatherbot` — 08:30 daily
+- `calibrate-snap` / `calibrate-backfill` — calibrage modèle
+- `shadow-*` (morning/nightly/resolve) + `debit-shadow-horaire` — shadow trading
 - `scan-wallets-polymarket` — dimanche 08:00
 - `audit-orga-trading-glm52` — dimanche 11:30
-- `brain-auto-push` — push brain après modification
+- `brain-auto-push` — push brain 08:00 + 20:00
+- `brain-sync-pull` — toutes les 15min
 - `check-email-*` — email automatisé
 - `veille-*` — veille sectorielle
 - `fly-benin-scan` — jeudi 20h
 - `prix-gazole-95` — semaine 07:00
+- `vpn-watchdog` — toutes les 5min
+- `rapport-paper-h01-kraken` — 08:00 daily
 
 Voir `hermes cron list` pour la liste complète.
 
