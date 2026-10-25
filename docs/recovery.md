@@ -89,10 +89,9 @@ Flow → Telegram → Catia (gateway default) ← systemd auto-restart
                     ├── Content (profile) — spawn CLI
                     └── Dev (profile) — spawn CLI
                     
-Bots 24/7 (auto-restart cron):
-- Whale Grinding (politique)
-- Grinding (weather)
-- Weather Ladder (scan 4x/jour)
+Bots 24/7 (supervisés par weather-watchdog.sh, cron 5min):
+- Hermes Weather Bot (run.py watch)
+- Observer ask_ladder (observer.py)
 ```
 
 ## Test rapide après redémarrage
@@ -105,7 +104,7 @@ tail -5 ~/.hermes/logs/gateway.log
 # 3. Crons schedulés ?
 hermes cron list | grep "state: scheduled" | wc -l
 # 4. Bots en vie ?
-ps aux | grep real_trader_v2 | grep -v grep
+ps aux | grep -E "run\.py watch|observer\.py" | grep -v grep
 # 5. Toi sur Telegram ?
 # → envoie un message de test
 ```
